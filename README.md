@@ -32,6 +32,14 @@ Realiza a clonagem de um itinerário escolar existente para uma ou mais escolas.
 - Clona o itinerário usando o endpoint apropriado da API.
 - Os resultados são exibidos no terminal.
 
+### `desativa_alunos.py`
+Desativa alunos cadastrados na plataforma RIEH.
+
+- Lê uma lista de CPFs do arquivo CSV (`data/desativar_alunos.csv`).
+- Para cada CPF, busca o aluno correspondente na API.
+- Atualiza o status do aluno para "formado" (`is_formed: True`) via requisição PATCH.
+- Informa no console o sucesso ou falha na desativação
+
 ---
 
 ## Requisitos
