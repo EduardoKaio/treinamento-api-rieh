@@ -1,7 +1,5 @@
 import pandas as pd
 import requests
-import json
-import re
 
 from auth import obter_token
 
@@ -19,23 +17,10 @@ def buscar_aluno_por_cpf(cpf, token):
 
 def desativar_aluno(aluno_data, token):
     aluno_id = aluno_data["id"]
-    pessoa = aluno_data["person"]
-    endereco = pessoa.get("address", {})
+    nome = aluno_data["person"]["name"]
 
     payload = {
-        "registration": aluno_data.get("registration", ""),
-        "person": {
-            "name": pessoa["name"],
-            "email": pessoa["email"],
-            "gender": pessoa.get("gender", ""),
-            "address": {
-                "country_state": endereco.get("country_state", 0),
-                "city": endereco.get("city", ""),
-            }
-        },
-        "school": aluno_data["school"],
-        "serie": aluno_data["serie"],
-        "is_formed": True,
+        "is_formed": True
     }
 
     headers = {
@@ -47,9 +32,9 @@ def desativar_aluno(aluno_data, token):
     response = requests.patch(url, json=payload, headers=headers)
 
     if response.status_code == 200:
-        print(f"Aluno {pessoa['name']} desativado com sucesso.")
+        print(f"Aluno {nome} (ID {aluno_id}) desativado com sucesso.")
     else:
-        print(f"Erro ao desativar {pessoa['name']}: {response.status_code} - {response.text}")
+        print(f"Erro ao desativar {nome} (ID {aluno_id}): {response.status_code} - {response.text}")
 
 def desativar_alunos():
     df = pd.read_csv("data/desativar_alunos.csv")
